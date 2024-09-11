@@ -13,7 +13,7 @@ namespace TodoApp.Data.Repositories
             _context = context;
         }
 
-        public async Task<IEnumerable<TodoItem>> GetAllAsync()
+        public async Task<List<TodoItem>> GetAllAsync()
         {
             return await _context.TodoItems.ToListAsync();
         }

@@ -4,7 +4,7 @@ namespace TodoApp.Services.Interfaces
 {
     public interface ITodoService
     {
-        Task<IEnumerable<TodoItem>> GetTodosAsync();
-        Task AddTodoAsync(TodoItem item);
+        Task<List<TodoItem>> GetTodoItemsAsync();
+        Task AddTodoItemAsync(TodoItem item);
     }
 }

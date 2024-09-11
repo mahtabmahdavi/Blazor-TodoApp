@@ -1,30 +1,45 @@
 ﻿@page "/todo"
 @rendermode InteractiveServer
 
-<h3>Todo (@todos.Count(todo => !todo.IsDone))</h3>
+@using TodoApp.Models
+@using TodoApp.Services.Interfaces
+
+@inject ITodoService _service
+
+<h3>Todo List</h3>
 
 <ul>
-    @foreach (var todo in todos)
+    @foreach (var item in todoItems)
     {
         <li>
-            <input type="checkbox" @bind="todo.IsDone" />
-            <input @bind="todo.Title" />
+            <input type="checkbox" @bind="item.IsDone" />
+            <input @bind="item.Title" />
         </li>
     }
 </ul>
 
+<h3>Add new Todo</h3>
+
 <input @bind="newTodo"/>
-<button @onclick="AddTodo">Add todo</button>
+<button @onclick="AddTodo">Add</button>
 
 @code {
-    private List<TodoItem> todos = new();
+    private List<TodoItem> todoItems = new();
     private string newTodo = "";
 
-    void AddTodo()
+    protected override async Task OnInitializedAsync()
+    {
+        todoItems = await _service.GetTodoItemsAsync();
+    }
+
+    private async Task AddTodo()
     {
         if (!string.IsNullOrWhiteSpace(newTodo))
         {
-            todos.Add(new TodoItem { Title = newTodo });
+            var newTodoItem = new TodoItem { Title = newTodo };
+            todoItems.Add(newTodoItem);
+            await _service.AddTodoItemAsync(newTodoItem);
+
             newTodo = string.Empty;
         }
     }
