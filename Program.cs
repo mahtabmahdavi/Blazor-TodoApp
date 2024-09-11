@@ -1,12 +1,16 @@
 using Microsoft.EntityFrameworkCore;
 using TodoApp.Components;
 using TodoApp.Data;
+using TodoApp.Data.Repositories;
+using TodoApp.Data.Repositories.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
+
+builder.Services.AddScoped<ITodoRepository, TodoRepository>();
 
 // Configure Entity Framework and connection string
 builder.Services.AddDbContext<TodoDbContext>(options =>
