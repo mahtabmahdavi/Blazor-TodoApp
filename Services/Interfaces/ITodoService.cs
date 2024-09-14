@@ -6,5 +6,6 @@ namespace TodoApp.Services.Interfaces
     {
         Task<List<TodoItem>> GetTodoItemsAsync();
         Task AddTodoItemAsync(TodoItem item);
+        Task DeleteTodoItemAsync(TodoItem item);
     }
 }

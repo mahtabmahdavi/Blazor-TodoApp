@@ -1,24 +1,27 @@
-﻿@page "/todo"
+﻿@page "/"
 @rendermode InteractiveServer
-
+@inherits LayoutComponentBase
 @inject ITodoService _service
 
-<h3>Todo List</h3>
+<PageTitle>Todo App</PageTitle>
 
-<ul>
-    @foreach (var item in todoItems)
-    {
-        <li>
-            <input type="checkbox" @bind="item.IsDone" />
-            <input @bind="item.Title" />
-        </li>
-    }
-</ul>
+<div class="todo-container">
+    <input type="text" class="add-input" @bind="newTodo"/>
 
-<h3>Add new Todo</h3>
+    <ul>
+        @foreach (var item in todoItems)
+        {
+            <li>
+                <input type="checkbox" @bind="item.IsDone" />
+                <input type="text" @bind="item.Title" disabled="true"/>
+                <button class="delete-button" @onclick="() => DeleteTodo(item)">...</button>
+            </li>
+        }
+    </ul>
 
-<input @bind="newTodo"/>
-<button @onclick="AddTodo">Add</button>
+    <button class="add-button" @onclick="AddTodo">+</button>
+</div>
+    
 
 @code {
     private List<TodoItem> todoItems = new();
@@ -40,4 +43,11 @@
             newTodo = string.Empty;
         }
     }
+
+    private async Task DeleteTodo(TodoItem item)
+    {
+        todoItems.Remove(item);
+        await _service.DeleteTodoItemAsync(item);
+    }
+
 }

@@ -22,5 +22,10 @@ namespace TodoApp.Services
         {
             await _repository.AddAsync(item);
         }
+
+        public async Task DeleteTodoItemAsync(TodoItem item)
+        {
+            await _repository.DeleteAsync(item.Id);
+        }
     }
 }
