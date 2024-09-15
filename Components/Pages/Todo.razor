@@ -1,0 +1,62 @@
+﻿@page "/"
+@rendermode InteractiveServer
+@inherits LayoutComponentBase
+@inject ITodoService _service
+
+<PageTitle>Todo App</PageTitle>
+
+<div class="todo-container">
+    <input type="text" class="add-input" @bind="newTodo" placeholder="Enter todo title"/>
+
+    <h4>Todo List (@todoItems.Count(todo => !todo.IsDone))</h4>
+
+    <ul>
+        @foreach (var item in todoItems)
+        {
+            <li>
+                <input type="checkbox" checked="@item.IsDone" @onchange="(e) => UpdateTodo(item, e.Value)" />
+                <input type="text" @bind="item.Title" class="@((item.IsDone ? "strikethrough" : ""))" disabled="true" />
+                <button class="delete-button" @onclick="() => DeleteTodo(item)">
+                    <img src="/delete-icon.png" />
+                </button>
+            </li>
+        }
+    </ul>
+
+    <button class="add-button" @onclick="AddTodo">+</button>
+</div>
+    
+
+@code {
+    private List<TodoItem> todoItems = new();
+    private string newTodo = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        todoItems = await _service.GetTodoItemsAsync();
+    }
+
+    private async Task AddTodo()
+    {
+        if (!string.IsNullOrWhiteSpace(newTodo))
+        {
+            var newTodoItem = new TodoItem { Title = newTodo };
+            todoItems.Add(newTodoItem);
+            await _service.AddTodoItemAsync(newTodoItem);
+
+            newTodo = string.Empty;
+        }
+    }
+
+    private async Task DeleteTodo(TodoItem item)
+    {
+        todoItems.Remove(item);
+        await _service.DeleteTodoItemAsync(item);
+    }
+
+    private async Task UpdateTodo(TodoItem item, object value)
+    {
+        item.IsDone = (bool)value;
+        await _service.UpdateTodoItemAsync(item);
+    }
+}
