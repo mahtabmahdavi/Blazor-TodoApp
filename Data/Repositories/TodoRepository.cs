@@ -15,34 +15,43 @@ namespace TodoApp.Data.Repositories
 
         public async Task<List<TodoItem>> GetAllAsync()
         {
-            return await _context.TodoItems.ToListAsync();
+            return await _context.TodoItems.AsNoTracking().ToListAsync();
         }
 
-        public async Task<TodoItem?> GetById(int id)
+        public async Task<TodoItem> GetById(int id)
         {
-            return await _context.TodoItems.FindAsync(id);
+            var result = await _context.TodoItems.AsNoTracking()
+                .Where(i => i.Id == id)
+                .FirstAsync();
+
+            if (result == null)
+                throw new Exception($"The task with id = {id} doesn't exist!");
+            return result;
         }
 
         public async Task AddAsync(TodoItem item)
         {
-            _context.TodoItems.Add(item);
+            _context.Attach(item);
+            _context.Entry(item).State = EntityState.Added;
             await _context.SaveChangesAsync();
         }
 
         public async Task DeleteAsync(int id)
         {
-            var item = await _context.TodoItems.FindAsync(id);
+            var item = new TodoItem { Id = id };
 
             if (item != null)
             {
-                _context.TodoItems.Remove(item);
+                _context.Attach(item);
+                _context.Entry(item).State = EntityState.Deleted;
                 await _context.SaveChangesAsync();
             }
         }
 
         public async Task UpdateAsync(TodoItem item)
         {
-            _context.TodoItems.Update(item);
+            _context.Attach(item);
+            _context.Entry(item).State = EntityState.Modified;
             await _context.SaveChangesAsync();
         }
     }
