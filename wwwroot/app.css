@@ -17,26 +17,29 @@ body {
 }
 
 .todo-container {
-    position: relative;
-    background-color: white;
-    padding: 20px;
-    border-radius: 15px;
-    box-shadow: 0 4px 20px rgb(0, 0, 0, 0.1);
-    max-width: 400px;
     width: 100%;
     height: 90vh;
+    max-width: 400px;
+    padding: 20px;
+    position: relative;
+    background-color: white;
+    border-radius: 15px;
+    box-shadow: 0 4px 20px rgb(0, 0, 0, 0.1);
     margin-inline: auto;
 }
 
 .add-input {
     width: 100%;
     height: 40px;
-    border-radius: 12px;
     border: none;
+    border-radius: 12px;
     background: #90d8fd;
 }
 
 .todo-container li {
+    padding: 10px 0;
+    display: flex;
+    align-items: center;
     list-style: none;
 }
 
@@ -45,9 +48,22 @@ body {
 }
 
 .todo-container li input[type="text"] {
+    width: 100%;
     border: none;
     border-bottom: 1px;
-    width: 80%;
+}
+
+.delete-button {
+    margin-left: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+.delete-button img {
+    width: 35px;
+    height: 35px;
 }
 
 .add-button {
@@ -58,10 +74,10 @@ body {
     position: absolute;
     bottom: 0;
     left: 50%;
-    transform: translateX(-50%) translateY(50%);
+    color: #6637b5;
     background: #d0baef;
     font-size: 24px;
-    color: #6637b5;
+    transform: translateX(-50%) translateY(50%);
 }
 
 /*

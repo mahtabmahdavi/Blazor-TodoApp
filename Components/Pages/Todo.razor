@@ -12,9 +12,11 @@
         @foreach (var item in todoItems)
         {
             <li>
-                <input type="checkbox" @bind="item.IsDone" />
+                <input type="checkbox" checked="@item.IsDone" @onchange="(e) => UpdateTodo(item, e.Value)" />
                 <input type="text" @bind="item.Title" disabled="true"/>
-                <button class="delete-button" @onclick="() => DeleteTodo(item)">...</button>
+                <button class="delete-button" @onclick="() => DeleteTodo(item)">
+                    <img src="/delete-icon.png" />
+                </button>
             </li>
         }
     </ul>
@@ -50,4 +52,9 @@
         await _service.DeleteTodoItemAsync(item);
     }
 
+    private async Task UpdateTodo(TodoItem item, object value)
+    {
+        item.IsDone = (bool)value;
+        await _service.UpdateTodoItemAsync(item);
+    }
 }
