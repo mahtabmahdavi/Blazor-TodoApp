@@ -6,14 +6,16 @@
 <PageTitle>Todo App</PageTitle>
 
 <div class="todo-container">
-    <input type="text" class="add-input" @bind="newTodo"/>
+    <input type="text" class="add-input" @bind="newTodo" placeholder="Enter todo title"/>
+
+    <h4>Todo List (@todoItems.Count(todo => !todo.IsDone))</h4>
 
     <ul>
         @foreach (var item in todoItems)
         {
             <li>
                 <input type="checkbox" checked="@item.IsDone" @onchange="(e) => UpdateTodo(item, e.Value)" />
-                <input type="text" @bind="item.Title" disabled="true"/>
+                <input type="text" @bind="item.Title" class="@((item.IsDone ? "strikethrough" : ""))" disabled="true" />
                 <button class="delete-button" @onclick="() => DeleteTodo(item)">
                     <img src="/delete-icon.png" />
                 </button>

@@ -26,6 +26,8 @@ body {
     border-radius: 15px;
     box-shadow: 0 4px 20px rgb(0, 0, 0, 0.1);
     margin-inline: auto;
+    display: flex;
+    flex-direction: column;
 }
 
 .add-input {
@@ -33,7 +35,20 @@ body {
     height: 40px;
     border: none;
     border-radius: 12px;
-    background: #90d8fd;
+    background: #d9d9d9;
+    padding-inline: 8px;
+}
+
+.todo-container h4 {
+    text-align: center;
+    margin: 10px;
+}
+
+.todo-container ul {
+    overflow: auto;
+    flex: 1;
+    margin: 0;
+    padding: 0;
 }
 
 .todo-container li {
@@ -44,6 +59,8 @@ body {
 }
 
 .todo-container li input[type="checkbox"] {
+    width: 25px;
+    height: 25px;
     margin-right: 10px;
 }
 
@@ -51,10 +68,15 @@ body {
     width: 100%;
     border: none;
     border-bottom: 1px;
+    font-size: 18px;
+}
+
+.strikethrough {
+    text-decoration: line-through;
+    color: darkred;
 }
 
 .delete-button {
-    margin-left: 10px;
     border: none;
     border-radius: 5px;
     background-color: transparent;
@@ -62,8 +84,8 @@ body {
 }
 
 .delete-button img {
-    width: 35px;
-    height: 35px;
+    width: 30px;
+    height: 30px;
 }
 
 .add-button {
@@ -79,45 +101,3 @@ body {
     font-size: 24px;
     transform: translateX(-50%) translateY(50%);
 }
-
-/*
-
-nav-bar {
-    background-color: white;
-    width: 60px;
-    box-shadow: 0px 4px 12px rgb(0, 0, 0, 0.1)
-}
-
-
-
-.nav-menu ul {
-    list-style-type: none;
-    padding: 0;
-}
-
-.nav-menu li {
-    padding: 10px 0;
-    text-align: center;
-}
-
-.nav-bar a {
-    color: #8a4af3;
-    text-decoration: none;
-}
-
-
-
-.todo-container ul {
-    list-style-type: none;
-    padding: 0;
-}
-
-
-
-
-
-
-
-
-
-*/
