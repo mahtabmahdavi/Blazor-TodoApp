@@ -22,19 +22,37 @@ namespace TodoApp.Tests
         [TestMethod]
         public async Task GetTodoItems_ShouldReturnItems()
         {
+            // Arrange
             var todoItems = new List<TodoItem>
             {
                 new TodoItem { Id = 1, Title = "Test 1", IsDone = false },
                 new TodoItem { Id = 2, Title = "Test 2", IsDone = true }
             };
 
+            // Act
             _repositoryMock.Setup(repo => repo.GetAllAsync()).ReturnsAsync(todoItems);
 
             var result = await _service.GetTodoItemsAsync();
 
+            // Assert
             Assert.AreEqual(2, result.Count);
             Assert.AreEqual("Test 1", result[0].Title);
             Assert.AreEqual("Test 2", result[1].Title);
+        }
+
+        [TestMethod]
+        public async Task AddTodoItem_ShouldAddItem()
+        {
+            // Arrange
+            var newItem = new TodoItem { Id = 3, Title = "New Task", IsDone = false };
+
+            // Act
+            _repositoryMock.Setup(repo => repo.AddAsync(newItem)).Returns(Task.CompletedTask);
+            
+            await _service.AddTodoItemAsync(newItem);
+
+            // Assert
+            _repositoryMock.Verify(repo => repo.AddAsync(newItem), Times.Once);
         }
 
         [TestCleanup]
