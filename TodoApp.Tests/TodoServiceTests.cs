@@ -1,4 +1,5 @@
 using Moq;
+using System;
 using TodoApp.Data.Repositories.Interfaces;
 using TodoApp.Models;
 using TodoApp.Services;
@@ -20,7 +21,7 @@ namespace TodoApp.Tests
         }
 
         [TestMethod]
-        public async Task GetTodoItems_ShouldReturnItems()
+        public async Task GetTodoItemsAsync_ShouldReturnItems()
         {
             // Arrange
             var todoItems = new List<TodoItem>
@@ -29,9 +30,9 @@ namespace TodoApp.Tests
                 new TodoItem { Id = 2, Title = "Test 2", IsDone = true }
             };
 
-            // Act
             _repositoryMock.Setup(repo => repo.GetAllAsync()).ReturnsAsync(todoItems);
 
+            // Act
             var result = await _service.GetTodoItemsAsync();
 
             // Assert
@@ -41,18 +42,33 @@ namespace TodoApp.Tests
         }
 
         [TestMethod]
-        public async Task AddTodoItem_ShouldAddItem()
+        public async Task AddTodoItemAsync_ShouldAddItem()
         {
             // Arrange
             var newItem = new TodoItem { Id = 3, Title = "New Task", IsDone = false };
 
-            // Act
             _repositoryMock.Setup(repo => repo.AddAsync(newItem)).Returns(Task.CompletedTask);
-            
+
+            // Act
             await _service.AddTodoItemAsync(newItem);
 
             // Assert
             _repositoryMock.Verify(repo => repo.AddAsync(newItem), Times.Once);
+        }
+
+        [TestMethod]
+        public async Task DeleteTodoItemAsync_ShouldDeleteItem()
+        {
+            // Arrange
+            var desiredItem = new TodoItem { Id = 1, Title = "Task to Delete", IsDone = true };
+
+            _repositoryMock.Setup(repo => repo.DeleteAsync(desiredItem.Id)).Returns(Task.CompletedTask);
+
+            // Act
+            await _service.DeleteTodoItemAsync(desiredItem);
+
+            // Assert
+            _repositoryMock.Verify(repo => repo.DeleteAsync(desiredItem.Id), Times.Once);
         }
 
         [TestCleanup]
